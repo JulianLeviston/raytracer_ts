@@ -86,6 +86,11 @@ function sub(t1: Tuple, t2: Tuple): Tuple {
   return applyBinOp(op, t1, t2)
 }
 
+/**
+ * Create a new tuple whose components are the
+ * negation of the components of the passed in tuple
+ * @param t tuple to negate the components of
+ */
 function negate(t: Tuple): Tuple {
   const negatedValues = t.values.map(v => -v)
   return tuple(...negatedValues)
