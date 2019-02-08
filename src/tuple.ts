@@ -20,7 +20,6 @@ class Tuple {
 
 /**
  * Constructor function for creating tuples.
- * 
  * @param args variable number of numbers to create a tuple out of
  */
 function tuple(...args): Tuple {
@@ -31,7 +30,6 @@ function tuple(...args): Tuple {
  * Constructor function for creating points.
  * Note that a point is simply a tuple whose w
  * component is 1
- * 
  * @param x the x (first) component of the point 
  * @param y the y (second) component of the point 
  * @param z the z (third) component of the point
@@ -44,7 +42,6 @@ function point(x: number, y: number, z: number): Tuple {
  * Constructor function for creating vectors.
  * Note that a point is simply a tuple whose w
  * component is 0
- * 
  * @param x the x (first) component of the vector 
  * @param y the y (second) component of the vector 
  * @param z the z (third) component of the vector
