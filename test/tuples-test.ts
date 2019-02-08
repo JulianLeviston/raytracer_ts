@@ -8,6 +8,7 @@ import {
   add,
   sub,
   negate,
+  multiply,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -61,3 +62,8 @@ test('Subtraction and Negation', t => {
   t.deepEqual(negate(negTuple), expected4, 'Negating a tuple works correctly')
 })
 
+test('Multiplication and Division', t => {
+  const a = tuple(1, -2, 3, -4)
+  const expected1 = tuple(3.5, -7, 10.5, -14)
+  t.deepEqual(multiply(a, 3.5), expected1, 'correctly multiplies a tuple by a scalar')
+})

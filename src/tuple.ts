@@ -93,6 +93,17 @@ function negate(t: Tuple): Tuple {
 
 /**
  * Create a new tuple whose components are the
+ * negation of the components of the passed in tuple
+ * @param t tuple to multiply
+ * @param scalar the value to multiply each of the components of the tuple by
+ */
+function multiply(t: Tuple, scalar: number): Tuple {
+  const multipliedValues = t.values.map(v => v * scalar)
+  return tuple(...multipliedValues)
+}
+
+/**
+ * Create a new tuple whose components are the
  * result of applying the `op` function to each of the
  * components of the passed in tuples, pair-wise
  * @param op binary operation (ie arity of 2) on numbers to be applied to each tuple component pair
@@ -104,4 +115,4 @@ function applyBinOp(op: (x: number, y: number) => number, t1: Tuple, t2: Tuple):
   return tuple(...appliedTupleValues)
 }
 
-export { tuple, point, vector, isPoint, isVector, add, sub, negate }
+export { tuple, point, vector, isPoint, isVector, add, sub, negate, multiply }
