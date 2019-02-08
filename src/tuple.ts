@@ -86,6 +86,11 @@ function sub(t1: Tuple, t2: Tuple): Tuple {
   return applyBinOp(op, t1, t2)
 }
 
+function negate(t: Tuple): Tuple {
+  const negatedValues = t.values.map(v => -v)
+  return tuple(...negatedValues)
+}
+
 /**
  * Create a new tuple whose components are the
  * result of applying the `op` function to each of the
@@ -99,4 +104,4 @@ function applyBinOp(op: (x: number, y: number) => number, t1: Tuple, t2: Tuple):
   return tuple(...appliedTupleValues)
 }
 
-export { tuple, point, vector, isPoint, isVector, add, sub }
+export { tuple, point, vector, isPoint, isVector, add, sub, negate }

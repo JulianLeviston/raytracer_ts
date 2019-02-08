@@ -7,6 +7,7 @@ import {
   isVector,
   add,
   sub,
+  negate,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -51,5 +52,12 @@ test('Subtraction and Negation', t => {
   const v = vector(5, 6, 7)
   const expected2 = point(-2, -4, -6)
   t.deepEqual(sub(p, v), expected2, 'Subtracting a vector from a point works correctly')
+  const v1 = vector(3, 2, 1)
+  const v2 = vector(5, 6, 7)
+  const expected3 = vector(-2, -4, -6)
+  t.deepEqual(sub(v1, v2), expected3, 'Subtracting one vector from another works correctly')
+  const negTuple = tuple(1, -2, 3, -4)
+  const expected4 = tuple(-1, 2, -3, 4)
+  t.deepEqual(negate(negTuple), expected4, 'Negating a tuple works correctly')
 })
 
