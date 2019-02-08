@@ -3,7 +3,7 @@ import { zipWith } from 'lodash'
 class Tuple {
   /**
    * A tuple is a set of floats
-   * For our purposes, we allow accesors
+   * For our purposes, we allow accessors
    * so they can act like points or colours
    * by convention, and to allow maths on them
    */
