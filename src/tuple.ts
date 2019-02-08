@@ -18,6 +18,11 @@ class Tuple {
   get w(): number { return this.value[3] }
 }
 
+/**
+ * Constructor function for creating tuples.
+ * 
+ * @param args variable number of numbers to create a tuple out of
+ */
 function tuple(...args): Tuple {
   return new Tuple(...args)
 }
