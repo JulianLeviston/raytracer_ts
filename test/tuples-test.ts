@@ -10,6 +10,7 @@ import {
   negate,
   multiply,
   divide,
+  magnitude,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -71,4 +72,17 @@ test('Multiplication and Division', t => {
   t.deepEqual(multiply(a, 0.5), expected2, 'correctly multiplies a tuple by a fraction')
   const expected3 = tuple(0.5, -1, 1.5, -2)
   t.deepEqual(divide(a, 2), expected3, 'correctly divides a tuple by a scalar')
+})
+
+test('Magnitude', t => {
+  let v = vector(1, 0, 0)
+  t.is(magnitude(v), 1, 'computes correctly for a vector 1 0 0')
+  v = vector(0, 1, 0)
+  t.is(magnitude(v), 1, 'computes correctly for a vector 0 1 0')
+  v = vector(0, 0, 1)
+  t.is(magnitude(v), 1, 'computes correctly for a vector 0 0 1')
+  v = vector(1, 2, 3)
+  t.is(magnitude(v), Math.sqrt(14), 'computes correctly for a vector 1 2 3')
+  v = vector(-1, -2, -3)
+  t.is(magnitude(v), Math.sqrt(14), 'computes correctly for a vector -1 -2 -3')
 })

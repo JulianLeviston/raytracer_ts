@@ -119,6 +119,18 @@ function divide(t: Tuple, scalar: number): Tuple {
 }
 
 /**
+ * Compute the length of the vector described by the 
+ * components of the passed in tuple
+ * @param t tuple to find the magnitude of
+ */
+function magnitude(t: Tuple): number {
+  const square = (x: number) => x ** 2
+  const sum = (xs: number[]): number => xs.reduce((a,b) => a + b, 0)
+  const sumOfSquares = (xs: number[]): number => sum(xs.map(square))
+  return Math.sqrt(sumOfSquares(t.values))
+}
+
+/**
  * Create a new tuple whose components are the
  * result of applying the `op` function to each of the
  * components of the passed in tuples, pair-wise
@@ -154,4 +166,5 @@ export {
   negate,
   multiply,
   divide,
+  magnitude,
  }
