@@ -9,6 +9,7 @@ import {
   sub,
   negate,
   multiply,
+  divide,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -66,4 +67,8 @@ test('Multiplication and Division', t => {
   const a = tuple(1, -2, 3, -4)
   const expected1 = tuple(3.5, -7, 10.5, -14)
   t.deepEqual(multiply(a, 3.5), expected1, 'correctly multiplies a tuple by a scalar')
+  const expected2 = tuple(0.5, -1, 1.5, -2)
+  t.deepEqual(multiply(a, 0.5), expected2, 'correctly multiplies a tuple by a fraction')
+  const expected3 = tuple(0.5, -1, 1.5, -2)
+  t.deepEqual(divide(a, 2), expected3, 'correctly divides a tuple by a scalar')
 })

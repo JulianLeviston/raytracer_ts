@@ -97,13 +97,24 @@ function negate(t: Tuple): Tuple {
 }
 
 /**
- * Create a new tuple whose components are the
- * negation of the components of the passed in tuple
+ * Create a new tuple whose components are the multiplication
+ * of each the components of the passed in tuple by some scalar
  * @param t tuple to multiply
  * @param scalar the value to multiply each of the components of the tuple by
  */
 function multiply(t: Tuple, scalar: number): Tuple {
   const op = (x: number) => x * scalar
+  return mapOver(op, t)
+}
+
+/**
+ * Create a new tuple whose components are the division
+ * of each the components of the passed in tuple by some scalar
+ * @param t tuple to divide
+ * @param scalar the value to divide each of the components of the tuple by
+ */
+function divide(t: Tuple, scalar: number): Tuple {
+  const op = (x: number) => x / scalar
   return mapOver(op, t)
 }
 
@@ -132,4 +143,15 @@ function mapOver(op: (x: number) => number, t: Tuple): Tuple {
   return tuple(...appliedValues)
 }
 
-export { tuple, point, vector, isPoint, isVector, add, sub, negate, multiply }
+export {
+  tuple,
+  point,
+  vector,
+  isPoint,
+  isVector,
+  add,
+  sub,
+  negate,
+  multiply,
+  divide,
+ }
