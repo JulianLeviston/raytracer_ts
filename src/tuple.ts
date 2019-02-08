@@ -23,8 +23,8 @@ function tuple(...args): Tuple {
 }
 
 /**
- * constructor function for creating points.
- * note that a point is simply a tuple whose w
+ * Constructor function for creating points.
+ * Note that a point is simply a tuple whose w
  * component is 1
  * 
  * @param x the x (first) component of the point 
@@ -36,8 +36,8 @@ function point(x: number, y: number, z: number): Tuple {
 }
 
 /**
- * constructor function for creating vectors.
- * note that a point is simply a tuple whose w
+ * Constructor function for creating vectors.
+ * Note that a point is simply a tuple whose w
  * component is 0
  * 
  * @param x the x (first) component of the vector 
