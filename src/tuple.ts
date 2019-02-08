@@ -67,8 +67,8 @@ function isVector(tuple: Tuple): Boolean {
 /**
  * Create a new tuple whose components are the
  * sum of the components of two passed in tuples
- * @param t1 first tuple to add
- * @param t2 second tuple to add
+ * @param t1 tuple whose components are to be subtracted from
+ * @param t2 tuple whose components are to be subtracted
  */
 function add(t1: Tuple, t2: Tuple): Tuple {
   const op = (x: number, y: number): number => x + y
