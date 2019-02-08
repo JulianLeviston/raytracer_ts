@@ -92,8 +92,8 @@ function sub(t1: Tuple, t2: Tuple): Tuple {
  * @param t tuple to negate the components of
  */
 function negate(t: Tuple): Tuple {
-  const negatedValues = t.values.map(v => -v)
-  return tuple(...negatedValues)
+  const op = (v: number) => -v
+  return mapOver(op, t)
 }
 
 /**
@@ -103,8 +103,8 @@ function negate(t: Tuple): Tuple {
  * @param scalar the value to multiply each of the components of the tuple by
  */
 function multiply(t: Tuple, scalar: number): Tuple {
-  const multipliedValues = t.values.map(v => v * scalar)
-  return tuple(...multipliedValues)
+  const op = (x: number) => x * scalar
+  return mapOver(op, t)
 }
 
 /**
@@ -118,6 +118,18 @@ function multiply(t: Tuple, scalar: number): Tuple {
 function applyBinOp(op: (x: number, y: number) => number, t1: Tuple, t2: Tuple): Tuple {
   const appliedTupleValues: number[] = zipWith(t1.values, t2.values, op)
   return tuple(...appliedTupleValues)
+}
+
+/**
+ * Create a new tuple from the passed in tuple where each of its
+ * components is the relative result of having had the passed in
+ * function `op` applied
+ * @param op a function of one argument
+ * @param t a tuple to apply the `op` function to every component of
+ */
+function mapOver(op: (x: number) => number, t: Tuple): Tuple {
+  const appliedValues = t.values.map(op)
+  return tuple(...appliedValues)
 }
 
 export { tuple, point, vector, isPoint, isVector, add, sub, negate, multiply }
