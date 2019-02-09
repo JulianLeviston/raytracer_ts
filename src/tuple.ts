@@ -157,6 +157,62 @@ function mapOver(op: (x: number) => number, t: Tuple): Tuple {
   return tuple(...appliedValues)
 }
 
+const roundedEquivalencePrecision = 5
+
+/**
+ * Rounds a number to an "equivalence precision",
+ * which is a power of 10 that we're comfortable
+ * having our library be accurate to.
+ * This is used to equate numbers and tuples in a way
+ * that decides what is "good enough" to be equal, because
+ * floating points are not particularly accurate.
+ * @param x number to round to equivalence precision
+ */
+function equivRound(x: number): number {
+  // The code truncates decimal values after a certain
+  // negative power of 10, which is externally defined.
+  // It does this by multiplying by the positive power
+  // and then rounding off the decimals after 0, then
+  // multiplying back by the negative power to restore
+  // the correct order of magnitude.
+  const prec = roundedEquivalencePrecision
+  const shifted = x * Math.pow(10, prec)
+  const roundedButPrecisionShifted = Math.round(shifted)
+  const rounded = roundedButPrecisionShifted * Math.pow(10, -prec)
+  return rounded
+}
+
+/**
+ * Rounds each of the components of a tuple to the
+ * accepted "equivalence precision" that we use for
+ * determining numeric equivalence.
+ * @param t Tuple to round the components of
+ */
+function equivRoundTuple(t: Tuple): Tuple {
+  return mapOver(equivRound, t)
+}
+
+/**
+ * Compare two numbers for rounded equivalence
+ * @param x first number to compare
+ * @param y second number to compare
+ */
+function isEquivTo(x: number, y: number): boolean {
+  const diff = Math.abs(x - y)
+  const epsilon = 0.00001
+  return diff <= epsilon
+}
+
+/**
+ * Compare two tuples for rounded equivalence
+ * @param t1 first tuple to compare
+ * @param t2 second tuple to compare
+ */
+function isTupleEquivTo(t1: Tuple, t2: Tuple): boolean {
+  const appliedTupleValues: boolean[] = zipWith(t1.values, t2.values, isEquivTo)
+  return appliedTupleValues.every(x => x)
+}
+
 export {
   tuple,
   point,
@@ -169,4 +225,8 @@ export {
   multiply,
   divide,
   magnitude,
+  isEquivTo,
+  isTupleEquivTo,
+  equivRoundTuple,
+  equivRound,
  }

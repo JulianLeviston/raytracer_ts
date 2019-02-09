@@ -11,6 +11,10 @@ import {
   multiply,
   divide,
   magnitude,
+  isEquivTo,
+  isTupleEquivTo,
+  equivRound,
+  equivRoundTuple,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -86,3 +90,17 @@ test('Magnitude', t => {
   v = vector(-1, -2, -3)
   t.is(magnitude(v), Math.sqrt(14), 'computes correctly for a vector -1 -2 -3')
 })
+
+test('Numeric Exactness and Equivalence', t => {
+  const a = Math.sqrt(14)
+  const expected = 3.7416575
+  t.true(isEquivTo(a, expected), 'provides the ability to check two numbers')
+  const t1 = tuple(1.7416575, 2.7416575, 3.7416575)
+  const t2 = tuple(1.74165751, 2.74165751, 3.74165751)
+  t.true(isTupleEquivTo(t1, t2), 'provides the ability to check two tuples')
+  const x = tuple(1.74165752038343, 1.74165752038343, 1.74165752038343)
+  const y = tuple(1.74165752099999, 1.74165752099999, 1.74165752099999)
+  t.deepEqual(equivRoundTuple(x), equivRoundTuple(y), 'provides the ability to round tuples for equivalence')
+  t.is(equivRound(1.7412342), equivRound(1.7412342999), 'provide the ability to round numbers for equivalence')
+})
+
