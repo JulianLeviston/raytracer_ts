@@ -230,8 +230,9 @@ function normalize(t: Tuple): Tuple {
 }
 
 /**
- * the dot product of two tuples: sums the product of
- * respective components of two tuples.
+ * The dot product of two tuples: sums the product of
+ * the respective components of two tuples.
+ * See https://en.wikipedia.org/wiki/Dot_product
  * @param t1 first Tuple
  * @param t2 second Tuple
  */
