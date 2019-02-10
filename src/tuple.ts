@@ -231,6 +231,15 @@ function dot(t1: Tuple, t2: Tuple): number {
   return sum(appliedTupleValues)
 }
 
+/**
+ * Creates a new tuple scaled back to unit dimensions
+ * @param t Tuple to normalize
+ */
+function normalize(t: Tuple): Tuple {
+  const tupleMagnitude = magnitude(t)
+  return divide(t, tupleMagnitude)
+}
+
 export {
   tuple,
   point,
@@ -248,4 +257,5 @@ export {
   equivRoundTuple,
   equivRound,
   dot,
+  normalize,
  }

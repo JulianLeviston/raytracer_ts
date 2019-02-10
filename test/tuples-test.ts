@@ -16,6 +16,7 @@ import {
   equivRound,
   equivRoundTuple,
   dot,
+  normalize,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -103,6 +104,17 @@ test('Numeric Exactness and Equivalence', t => {
   const y = tuple(1.74165752099999, 1.74165752099999, 1.74165752099999)
   t.deepEqual(equivRoundTuple(x), equivRoundTuple(y), 'provides the ability to round tuples for equivalence')
   t.is(equivRound(1.7412342), equivRound(1.7412342999), 'provide the ability to round numbers for equivalence')
+})
+
+test('Normalization', t => {
+  let v = vector(4, 0, 0)
+  let expected = vector(1, 0, 0)
+  t.deepEqual(normalize(v), expected, 'normalizes the vector 4 0 0 into vector 1 0 0')
+  v = vector(1, 2, 3)
+  expected = vector(0.26726, 0.53452, 0.80178)
+  t.deepEqual(equivRoundTuple(normalize(v)), equivRoundTuple(expected), 'normalizes the vector 1 2 3 correctly')
+  v = normalize(vector(1, 2, 3))
+  t.is(equivRound(magnitude(v)), 1, 'gives the correct magnitude of a normalized vector')
 })
 
 test('Dot product', t => {
