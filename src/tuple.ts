@@ -221,8 +221,7 @@ function isTupleEquivTo(t1: Tuple, t2: Tuple): boolean {
 }
 
 /**
- * Takes two tuples, builds a new tuple with each of its components
- * multiplied respectively together, then sums all of the components.
+ * Sums the product of respective components of two tuples.
  * @param t1 first Tuple
  * @param t2 second Tuple
  */
