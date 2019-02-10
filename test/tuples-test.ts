@@ -17,6 +17,7 @@ import {
   equivRoundTuple,
   dot,
   normalize,
+  cross,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -123,3 +124,11 @@ test('Dot product', t => {
   t.is(dot(a, b), 20, 'works correctly for two vectors')
 })
 
+test('Cross product', t => {
+  const a = vector(1, 2, 3)
+  const b = vector(2, 3, 4)
+  let expected = vector(-1, 2, -1)
+  t.deepEqual(cross(a, b), expected, 'works correctly in one order of arguments')
+  expected = vector(1, -2, 1)
+  t.deepEqual(cross(b, a), expected, 'works correctly in the other order of arguments')
+})

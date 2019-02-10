@@ -231,7 +231,7 @@ function normalize(t: Tuple): Tuple {
 
 /**
  * The dot product of two tuples: sums the product of
- * the respective components of two tuples.
+ * the respective components of two vectors.
  * See https://en.wikipedia.org/wiki/Dot_product
  * @param t1 first Tuple
  * @param t2 second Tuple
@@ -239,6 +239,25 @@ function normalize(t: Tuple): Tuple {
 function dot(t1: Tuple, t2: Tuple): number {
   const appliedTupleValues: number[] = zipWith(t1.values, t2.values, (x: number, y: number) => x * y)
   return sum(appliedTupleValues)
+}
+
+/**
+ * The cross product of two vectors. Creates a new
+ * vector where each component is the difference
+ * between the products of the components either side
+ * of the component in question. (So, x is made from 
+ * the difference between the product of y1, z2
+ * and z1, y2, etc.)
+ * See https://en.wikipedia.org/wiki/Cross_product
+ * @param t1 first Tuple
+ * @param t2 second Tuple
+ */
+function cross(t1: Tuple, t2: Tuple): Tuple {
+  return vector(
+    t1.y * t2.z - t1.z * t2.y,
+    t1.z * t2.x - t1.x * t2.z,
+    t1.x * t2.y - t1.y * t2.x
+  )
 }
 
 export {
@@ -259,4 +278,5 @@ export {
   equivRound,
   dot,
   normalize,
+  cross,
  }
