@@ -127,9 +127,16 @@ function divide(t: Tuple, scalar: number): Tuple {
  */
 function magnitude(t: Tuple): number {
   const square = (x: number) => x ** 2
-  const sum = (xs: number[]): number => xs.reduce((a,b) => a + b, 0)
   const sumOfSquares = (xs: number[]): number => sum(xs.map(square))
   return Math.sqrt(sumOfSquares(t.values))
+}
+
+/**
+ * Return the summed numbers in an array of numbers
+ * @param xs an array of numbers to sum
+ */
+function sum(xs: number[]): number {
+  return xs.reduce((a, b) => a + b, 0)
 }
 
 /**
@@ -213,6 +220,17 @@ function isTupleEquivTo(t1: Tuple, t2: Tuple): boolean {
   return appliedTupleValues.every(x => x)
 }
 
+/**
+ * Takes two tuples, builds a new tuple with each of its components
+ * multiplied respectively together, then sums all of the components.
+ * @param t1 first Tuple
+ * @param t2 second Tuple
+ */
+function dot(t1: Tuple, t2: Tuple): number {
+  const appliedTupleValues: number[] = zipWith(t1.values, t2.values, (x: number, y: number) => x * y)
+  return sum(appliedTupleValues)
+}
+
 export {
   tuple,
   point,
@@ -229,4 +247,5 @@ export {
   isTupleEquivTo,
   equivRoundTuple,
   equivRound,
+  dot,
  }

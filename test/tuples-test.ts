@@ -15,6 +15,7 @@ import {
   isTupleEquivTo,
   equivRound,
   equivRoundTuple,
+  dot,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -102,5 +103,11 @@ test('Numeric Exactness and Equivalence', t => {
   const y = tuple(1.74165752099999, 1.74165752099999, 1.74165752099999)
   t.deepEqual(equivRoundTuple(x), equivRoundTuple(y), 'provides the ability to round tuples for equivalence')
   t.is(equivRound(1.7412342), equivRound(1.7412342999), 'provide the ability to round numbers for equivalence')
+})
+
+test('Dot product', t => {
+  const a = vector(1, 2, 3)
+  const b = vector(2, 3, 4)
+  t.is(dot(a, b), 20, 'works correctly for two vectors')
 })
 
