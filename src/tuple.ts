@@ -221,6 +221,15 @@ function isTupleEquivTo(t1: Tuple, t2: Tuple): boolean {
 }
 
 /**
+ * Creates a new tuple scaled back to unit dimensions
+ * @param t Tuple to normalize
+ */
+function normalize(t: Tuple): Tuple {
+  const tupleMagnitude = magnitude(t)
+  return divide(t, tupleMagnitude)
+}
+
+/**
  * the dot product of two tuples: sums the product of
  * respective components of two tuples.
  * @param t1 first Tuple
@@ -229,15 +238,6 @@ function isTupleEquivTo(t1: Tuple, t2: Tuple): boolean {
 function dot(t1: Tuple, t2: Tuple): number {
   const appliedTupleValues: number[] = zipWith(t1.values, t2.values, (x: number, y: number) => x * y)
   return sum(appliedTupleValues)
-}
-
-/**
- * Creates a new tuple scaled back to unit dimensions
- * @param t Tuple to normalize
- */
-function normalize(t: Tuple): Tuple {
-  const tupleMagnitude = magnitude(t)
-  return divide(t, tupleMagnitude)
 }
 
 export {
