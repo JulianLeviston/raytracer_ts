@@ -19,6 +19,15 @@ console.log(prog1a)
 // expressions can be either an application of an operation, or a value
 type Expr = IVal | IAdd | ISub | IMul | IDiv
 
+// but what does this *MEAN*? it means an Expression can be one of:
+// - A straight up number value
+// - An addition expression, which symbolises adding two other Expr values together (yes, recursive)
+// - A subtraction expression, which symbolises subtracting one Expr from another (yes, recursive)
+// - A multiplication expression, which symbolises multiplying one Expr to another (yes, recursive)
+// - A division expression, which symbolises dividing one Expr by another (yes, recursive)
+//
+// and because it's recursive, this lets us build up arbitrarily complex expressions!
+
 interface IVal { kind: "val"; value: number }
 class Val implements IVal {
   kind: "val"
