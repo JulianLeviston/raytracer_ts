@@ -114,6 +114,12 @@ function writePixel(c: Canvas, x: number, y: number, colour: Tuple): Canvas {
   return newCanvas
 }
 
+/**
+ * Builds a PPM file string from a passed in canvas.
+ * PPM files are about the most basic image file format
+ * possible, but they're also very easy to construct.
+ * @param c Canvas to build a PPM string from
+ */
 function canvasToPpm(c: Canvas): string {
   let ppm = 'P3'
   const [w, h] = [width, height].map(f => f(c))
