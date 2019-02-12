@@ -60,6 +60,11 @@ function height(c: Canvas): number {
   return c.height()
 }
 
+/**
+ * Gets an array of the pixels contained
+ * in the Canvas.
+ * @param c canvas to retrieve the pixels from
+ */
 function pixels(c: Canvas): Tuple[] {
   return c.pixels()
 }
