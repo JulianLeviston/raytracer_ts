@@ -271,8 +271,18 @@ function cross(t1: Tuple, t2: Tuple): Tuple {
  * @param g green component of colour
  * @param b blue component of colour
  */
-function colour(r: number, g: number, b: number) {
+function colour(r: number, g: number, b: number): Tuple {
   return tuple(r, g, b)
+}
+
+/**
+ * Multiply one colour (or tuple) by another
+ * @param t1 First tuple to multiply the colour components of
+ * @param t2 second tuple to multiply the colour components of
+ */
+function multiplyColours(t1: Tuple, t2: Tuple): Tuple {
+  const op = (x: number, y: number): number => x * y
+  return applyBinOp(op, t1, t2)
 }
 
 export {
@@ -295,4 +305,5 @@ export {
   normalize,
   cross,
   colour,
+  multiplyColours,
  }

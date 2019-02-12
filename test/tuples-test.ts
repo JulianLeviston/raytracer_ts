@@ -19,6 +19,7 @@ import {
   normalize,
   cross,
   colour,
+  multiplyColours,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -139,4 +140,18 @@ test('Colour creation with 4 3 2', t => {
   t.is(a.r, 4, 'has r=4')
   t.is(a.g, 3, 'has g=3')
   t.is(a.b, 2, 'has b=2')
+})
+
+test('Arithmetic on colours', t => {
+  let c1 = colour(0.9, 0.6, 0.75)
+  let c2 = colour(0.7, 0.1, 0.25)
+  let expected = colour(1.6, 0.7, 1.0)
+  t.deepEqual(add(c1, c2), expected, 'supports adding two colours correctly')
+  expected = colour(0.2, 0.5, 0.5)
+  t.deepEqual(equivRoundTuple(sub(c1, c2)), equivRoundTuple(expected), 'supports subtracting one colour from another correctly')
+  let c = colour(0.2, 0.3, 0.4)
+  t.deepEqual(equivRoundTuple(multiply(c, 2)), equivRoundTuple(colour(0.4, 0.6, 0.8)), 'supports multiplying a colour by a scalar correctly')
+  c1 = colour(1, 0.2, 0.4)
+  c2 = colour(0.9, 1, 0.1)
+  t.deepEqual(equivRoundTuple(multiplyColours(c1, c2)), equivRoundTuple(colour(0.9, 0.2, 0.04)), 'Multiplies one colour by another correctly')
 })
