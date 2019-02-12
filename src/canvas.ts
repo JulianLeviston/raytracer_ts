@@ -3,6 +3,9 @@ import {
   colour,
   copy as tupleCopy,
 } from './tuple'
+import {
+  addLine,
+} from './basics'
 
 class Matrix<A> {
   /**
@@ -111,6 +114,14 @@ function writePixel(c: Canvas, x: number, y: number, colour: Tuple): Canvas {
   return newCanvas
 }
 
+function canvasToPpm(c: Canvas): string {
+  let ppm = 'P3'
+  const [w, h] = [width, height].map(f => f(c))
+  ppm = addLine(ppm, `${w} ${h}`)
+  ppm = addLine(ppm, '255')
+  return ppm
+}
+
 export {
   Canvas,
   canvas,
@@ -119,5 +130,6 @@ export {
   pixels,
   writePixel,
   pixelAt,
+  canvasToPpm,
 }
 

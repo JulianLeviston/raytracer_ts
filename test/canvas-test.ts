@@ -6,12 +6,16 @@ import {
   pixels,
   writePixel,
   pixelAt,
+  canvasToPpm,
 } from '../src/canvas'
 import {
   Tuple,
   colour,
   isTupleEquivTo,
 } from '../src/tuple'
+import {
+  linesFromToOf,
+} from '../src/basics'
 
 test('Canvas creation', t => {
   let c = canvas(10, 20)
@@ -29,4 +33,12 @@ test('Pixel writing and reading', t => {
   const green = colour(0, 1, 0)
   const updatedC = writePixel(c, 2, 3, green)
   t.deepEqual(pixelAt(updatedC, 2, 3), green, 'works correctly when reading a written pixel')
+})
+
+test('PPM Construction', t => {
+  let c = canvas(5, 3)
+  let ppm = canvasToPpm(c)
+  const result = linesFromToOf(1, 3, ppm)
+  const expected = ["P3", "5 3", "255"]
+  t.deepEqual(linesFromToOf(1, 3, ppm), expected, 'builds a header correctly')
 })
