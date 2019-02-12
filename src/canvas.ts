@@ -66,19 +66,19 @@ function canvas(width: number, height: number): Canvas {
 }
 
 /**
- * Get the width of a Canvas
- * @param c canvas to find the width of
+ * Get the width of any Matrix (includes Canvas)
+ * @param m matrix to find the width of
  */
-function width(c: Canvas): number {
-  return c.width()
+function width(m: Matrix<any>): number {
+  return m.width()
 }
 
 /**
- * Get the height of a Canvas
- * @param c canvas to find the height of
+ * Get the height of any Matrix (includes Canvas)
+ * @param m matrix to find the height of
  */
-function height(c: Canvas): number {
-  return c.height()
+function height(m: Matrix<any>): number {
+  return m.height()
 }
 
 /**
