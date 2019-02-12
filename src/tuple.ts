@@ -286,6 +286,7 @@ function multiplyColours(t1: Tuple, t2: Tuple): Tuple {
 }
 
 export {
+  Tuple,
   tuple,
   point,
   vector,
