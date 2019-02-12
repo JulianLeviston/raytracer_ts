@@ -4,6 +4,8 @@ import {
   width,
   height,
   pixels,
+  writePixel,
+  pixelAt,
 } from '../src/canvas'
 import {
   Tuple,
@@ -20,4 +22,11 @@ test('Canvas creation', t => {
   }
   t.is(pixels(c).every((isBlack)), true, 'provides a canvas with correct initial colour')
   t.is(pixels(c).length, 200, 'provides a canvas with the correct number of pixels')
+})
+
+test('Pixel writing and reading', t => {
+  const c = canvas(10, 20)
+  const green = colour(0, 1, 0)
+  const updatedC = writePixel(c, 2, 3, green)
+  t.deepEqual(pixelAt(updatedC, 2, 3), green, 'works correctly when reading a written pixel')
 })

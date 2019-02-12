@@ -1,4 +1,8 @@
-import { Tuple, colour } from './tuple'
+import {
+  Tuple,
+  colour,
+  copy as tupleCopy,
+} from './tuple'
 
 class Matrix<A> {
   /**
@@ -7,24 +11,31 @@ class Matrix<A> {
    * certain type.
    */
   private store: A[][]
-  constructor(height: number, width: number, valueConstructor: () => A) {
-    const rows = Array.from(Array(height).keys())
-    const cols = Array.from(Array(width).keys())
-    this.store = rows.map((row) => {
-      return cols.map((col) => {
-        return valueConstructor()
-      })
-    })
+  constructor(values: A[][]) {
+    this.store = values
   }
-  width() {
+  get values(): A[][] {
+    return this.store
+  }
+  width(): number {
     return this.store[0].length
   }
-  height() {
+  height(): number {
     return this.store.length
   }
-  pixels() {
+  pixels(): A[] {
     return this.store.reduce((acc, arr) => acc.concat(arr), [])
   }
+  setElem(y: number, x: number, value: A) {
+    this.store[y-1][x-1] = value
+  }
+  getElem(y: number, x: number): A {
+    return this.store[y-1][x-1]
+  }
+}
+
+function matrix<A>(values: A[][]): Matrix<A> {
+  return new Matrix<A>(values)
 }
 
 /**
@@ -41,7 +52,14 @@ type Canvas = Matrix<Tuple>
  * @param height intended height of the canvas to be created
  */
 function canvas(width: number, height: number): Canvas {
-  return new Matrix<Tuple>(height, width, () => colour(0, 0, 0))
+  const rows = Array.from(Array(height).keys())
+  const cols = Array.from(Array(width).keys())
+  const values = rows.map((row) => {
+    return cols.map((col) => {
+      return colour(0, 0, 0)
+    })
+  })
+  return matrix<Tuple>(values)
 }
 
 /**
@@ -66,7 +84,31 @@ function height(c: Canvas): number {
  * @param c canvas to retrieve the pixels from
  */
 function pixels(c: Canvas): Tuple[] {
-  return c.pixels()
+  return c.pixels().map(tupleCopy)
+}
+
+/**
+ * Pulls out a copy of the pixel at the given x y co-ordinates
+ * @param c Canvas that we want to read a pixel from
+ * @param x horizontal position (1-indexed) that we'd like to read from
+ * @param y vertical position (1-indexed) that we'd like to read from
+ */
+function pixelAt(c: Canvas, x: number, y: number): Tuple {
+  return tupleCopy(c.getElem(y+1, x+1))
+}
+
+/**
+ * Makes a copy of the passed in canvas with a passed in colour
+ * at the provided x y coordinates adjusted
+ * @param c Canvas that we want to make an adjusted copy of
+ * @param x horizontal position (1-indexed) that we'd like to write to
+ * @param y veritcal position (1-indexed) that we'd like to write to
+ * @param colour 
+ */
+function writePixel(c: Canvas, x: number, y: number, colour: Tuple): Canvas {
+  const newCanvas = matrix<Tuple>(c.values)
+  newCanvas.setElem(y+1, x+1, tupleCopy(colour))
+  return newCanvas
 }
 
 export {
@@ -75,5 +117,7 @@ export {
   width,
   height,
   pixels,
+  writePixel,
+  pixelAt,
 }
 

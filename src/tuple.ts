@@ -43,6 +43,10 @@ function point(x: number, y: number, z: number): Tuple {
   return tuple(x, y, z, 1)
 }
 
+function copy(t: Tuple): Tuple {
+  return tuple(...t.values)
+}
+
 /**
  * Constructor function for creating vectors.
  * Note that a point is simply a tuple whose w
@@ -307,4 +311,5 @@ export {
   cross,
   colour,
   multiplyColours,
+  copy,
  }
