@@ -26,7 +26,7 @@ class Matrix<A> {
   height(): number {
     return this.store.length
   }
-  cells(): A[] {
+  elems(): A[] {
     return this.store.reduce((acc, arr) => acc.concat(arr), [])
   }
   setElem(y: number, x: number, value: A) {
@@ -87,7 +87,7 @@ function height(c: Canvas): number {
  * @param c canvas to retrieve the pixels from
  */
 function pixels(c: Canvas): Tuple[] {
-  return c.cells().map(tupleCopy)
+  return c.elems().map(tupleCopy)
 }
 
 /**
