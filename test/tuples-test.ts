@@ -18,6 +18,7 @@ import {
   dot,
   normalize,
   cross,
+  colour,
  } from '../src/tuple'
 
 test('Tuple creation and field access of tuple 4 3 2 1', t => {
@@ -131,4 +132,11 @@ test('Cross product', t => {
   t.deepEqual(cross(a, b), expected, 'works correctly in one order of arguments')
   expected = vector(1, -2, 1)
   t.deepEqual(cross(b, a), expected, 'works correctly in the other order of arguments')
+})
+
+test('Colour creation with 4 3 2', t => {
+  const a = colour(4, 3, 2)
+  t.is(a.r, 4, 'has r=4')
+  t.is(a.g, 3, 'has g=3')
+  t.is(a.b, 2, 'has b=2')
 })

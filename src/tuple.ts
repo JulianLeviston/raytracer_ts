@@ -12,10 +12,15 @@ class Tuple {
     this.value = args
   }
   get values(): number[] { return this.value }
+  // for points and vectors
   get x(): number { return this.value[0] }
   get y(): number { return this.value[1] }
   get z(): number { return this.value[2] }
   get w(): number { return this.value[3] }
+  // for colours
+  get r(): number { return this.value[0] }
+  get g(): number { return this.value[1] }
+  get b(): number { return this.value[2] }
 }
 
 /**
@@ -260,6 +265,16 @@ function cross(t1: Tuple, t2: Tuple): Tuple {
   )
 }
 
+/**
+ * Construct colour from r g b components
+ * @param r red component of colour
+ * @param g green component of colour
+ * @param b blue component of colour
+ */
+function colour(r: number, g: number, b: number) {
+  return tuple(r, g, b)
+}
+
 export {
   tuple,
   point,
@@ -279,4 +294,5 @@ export {
   dot,
   normalize,
   cross,
+  colour,
  }
