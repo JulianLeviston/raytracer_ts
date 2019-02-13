@@ -29,8 +29,20 @@ function addLine(s1: string, s2: string): string {
   return `${s1}\n${s2}`
 }
 
+/**
+ * Reduces over the a list of functions, applying each to the target
+ * and finally returning the fully transformed target. If you want it 
+ * work immutably, ensure your functions each return a new value.
+ * @param target initial object we'd like to transform with our functions
+ * @param fns an array of functions to be applied to the target
+ */
+function doTo<A>(target: A, fns: ((x: A) => A)[]) {
+  return fns.reduce((acc, fn) => fn(acc), target)
+}
+
 export {
   lines,
   linesFromToOf,
   addLine,
+  doTo,
 }
