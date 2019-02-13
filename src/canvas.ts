@@ -144,7 +144,9 @@ function canvasToPpm(c: Canvas): string {
 }
 
 /**
- * 
+ * Builds the string data lines out of the pixel data
+ * held in the canvas matrix, with colour values scaled
+ * according to the passed in maxColourValue.
  * @param c Canvas to build out the data lines from
  * @param maxColourValue maximum colour value to scale the
  * pixels to
@@ -156,6 +158,14 @@ function ppmDataLines(c: Canvas, maxColourValue: number): string[] {
   return concatMap(buildRowStrings, rowNumberRange)
 }
 
+/**
+ * Builds a function that takes a row number and extracts an array of
+ * strings (because they may be wrapped) from the closed-over canvas
+ * and maxColourValue. Useful for iterating over an array of 1-based
+ * indexes as the height of a canvas.
+ * @param c Canvas to build a row string from
+ * @param maxColourValue maximum colour value to scale the pixels to
+ */
 function buildRowStringsFor(c: Canvas, maxColourValue: number): (rowNumber: number) => string[] {
   const rowStringsBuilder = (rowNumber: number) => {
     const pixels = c.getRow(rowNumber)
@@ -164,15 +174,27 @@ function buildRowStringsFor(c: Canvas, maxColourValue: number): (rowNumber: numb
   return rowStringsBuilder
 }
 
+/**
+ * Extracts each value from the pixel's components (red, green, blue) and
+ * scales them to an array of clamped integers.
+ * @param maxColourValue maximum colour value number to scale the pixel colour values to
+ * @param pixel a Tuple of colour: red, green, blue to transform the values of
+ */
 function pixelToClampedPpmInts(maxColourValue: number, pixel: Tuple): number[] {
   const clampedFloatNumsFromTuple: (n: number) => number = 
     (n: number) => clampedPpmIntFromFloat(maxColourValue, n)
   return [pixel.r, pixel.g, pixel.b].map(clampedFloatNumsFromTuple)
 }
 
-function clampedPpmIntFromFloat(maxColourValue: number, x: number): number {
+/**
+ * Transforms a single number into a scaled, clamped colour value from a
+ * float between 0 and 1.
+ * @param maxColourValue maximum colour value number to scale an individual colour component number to
+ * @param colourValue the numeric colur value to scale by the maxColourValue then clamp to obtain the transformed value
+ */
+function clampedPpmIntFromFloat(maxColourValue: number, colourValue: number): number {
   const maxVal = maxColourValue
-  const minVal = Math.min(maxVal, x * maxVal)
+  const minVal = Math.min(maxVal, colourValue * maxVal)
   const minMaxVal = Math.max(0, minVal)
   return Math.round(minMaxVal)
 }
