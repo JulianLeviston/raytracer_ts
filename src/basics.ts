@@ -40,9 +40,55 @@ function doTo<A>(target: A, fns: ((x: A) => A)[]) {
   return fns.reduce((acc, fn) => fn(acc), target)
 }
 
+/**
+ * Maps the array-producing mapper over each item of the items array
+ * but flattening into a new array as it goes.
+ * alias: flatMap
+ * @param mapper function taking an A value and producing a list of B values
+ * @param items array of A values
+ */
+function concatMap<A,B>(mapper: (x: A) => B[], items: A[]): B[] {
+  return items.reduce((acc, item) => acc.concat(mapper(item)), [])
+}
+
+/**
+ * Flatten an array of arrays into a single array.
+ * @param arrays array of arrays we want to flatten one level
+ */
+function concat<A>(arrays: A[][]): A[] {
+  return concatMap(<(items: A[]) => A[]>identity, arrays)
+}
+
+/**
+ * Returns whatever parameter is given to it unadorned
+ * Seems useless until we start to notice just how often
+ * this turns up in function programming.
+ * @param x the item to return
+ */
+function identity<A>(x: A): A {
+  return x
+}
+
+/**
+ * Builds a numeric range as an array with elements ranging
+ * between the from and to numbers passed as arguments.
+ * @example range(1,4) -> [1, 2, 3, 4]
+ * @param from number the range should start at
+ * @param to number the range should end on
+ */
+function range(from: number, to: number): number[] {
+  const size = to - from
+  const arr = Array.from(Array(size).keys())
+  return arr.map((_item, index) => from + index)
+}
+
 export {
+  identity,
   lines,
   linesFromToOf,
   addLine,
   doTo,
+  concat,
+  concatMap,
+  range,
 }

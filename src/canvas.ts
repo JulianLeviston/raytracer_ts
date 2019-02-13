@@ -5,6 +5,9 @@ import {
 } from './tuple'
 import {
   addLine,
+  concatMap,
+  concat,
+  range,
 } from './basics'
 
 class Matrix<A> {
@@ -27,13 +30,16 @@ class Matrix<A> {
     return this.store.length
   }
   elems(): A[] {
-    return this.store.reduce((acc, arr) => acc.concat(arr), [])
+    return concat(this.store)
   }
   setElem(y: number, x: number, value: A) {
     this.store[y-1][x-1] = value
   }
   getElem(y: number, x: number): A {
     return this.store[y-1][x-1]
+  }
+  getRow(y: number): A[] {
+    return this.values[y-1]
   }
 }
 
@@ -62,7 +68,7 @@ function canvas(width: number, height: number): Canvas {
       return colour(0, 0, 0)
     })
   })
-  return matrix<Tuple>(values)
+  return matrix(values)
 }
 
 /**
@@ -115,6 +121,13 @@ function writePixel(c: Canvas, x: number, y: number, colour: Tuple): Canvas {
 }
 
 /**
+ * This is the maximum colour value
+ * that pixels will be scaled to for
+ * generating PPM files
+ */
+const maxColourValueForPpm: number = 255
+
+/**
  * Builds a PPM file string from a passed in canvas.
  * PPM files are about the most basic image file format
  * possible, but they're also very easy to construct.
@@ -124,8 +137,44 @@ function canvasToPpm(c: Canvas): string {
   let ppm = 'P3'
   const [w, h] = [width, height].map(f => f(c))
   ppm = addLine(ppm, `${w} ${h}`)
-  ppm = addLine(ppm, '255')
+  ppm = addLine(ppm, String(maxColourValueForPpm))
+  const dataLines = ppmDataLines(c, maxColourValueForPpm)
+  ppm = dataLines.reduce(addLine, ppm)
   return ppm
+}
+
+/**
+ * 
+ * @param c Canvas to build out the data lines from
+ * @param maxColourValue maximum colour value to scale the
+ * pixels to
+ */
+function ppmDataLines(c: Canvas, maxColourValue: number): string[] {
+  let canvasHeight = height(c)
+  const buildRowStrings = buildRowStringsFor(c, maxColourValue)
+  const rowNumberRange = range(1, canvasHeight)
+  return concatMap(buildRowStrings, rowNumberRange)
+}
+
+function buildRowStringsFor(c: Canvas, maxColourValue: number): (rowNumber: number) => string[] {
+  const rowStringsBuilder = (rowNumber: number) => {
+    const pixels = c.getRow(rowNumber)
+    return [pixels.map((pixel) => pixelToClampedPpmInts(maxColourValue, pixel).join(' ')).join(' ')]
+  }
+  return rowStringsBuilder
+}
+
+function pixelToClampedPpmInts(maxColourValue: number, pixel: Tuple): number[] {
+  const clampedFloatNumsFromTuple: (n: number) => number = 
+    (n: number) => clampedPpmIntFromFloat(maxColourValue, n)
+  return [pixel.r, pixel.g, pixel.b].map(clampedFloatNumsFromTuple)
+}
+
+function clampedPpmIntFromFloat(maxColourValue: number, x: number): number {
+  const maxVal = maxColourValue
+  const minVal = Math.min(maxVal, x * maxVal)
+  const minMaxVal = Math.max(0, minVal)
+  return Math.round(minMaxVal)
 }
 
 export {

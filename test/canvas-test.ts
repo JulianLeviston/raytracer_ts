@@ -1,5 +1,6 @@
 import test from 'ava'
 import {
+  Canvas,
   canvas,
   width,
   height,
@@ -15,6 +16,7 @@ import {
 } from '../src/tuple'
 import {
   linesFromToOf,
+  doTo,
 } from '../src/basics'
 
 test('Canvas creation', t => {
@@ -39,6 +41,20 @@ test('PPM Construction', t => {
   let c = canvas(5, 3)
   let ppm = canvasToPpm(c)
   const result = linesFromToOf(1, 3, ppm)
-  const expected = ["P3", "5 3", "255"]
+  let expected = ["P3", "5 3", "255"]
   t.deepEqual(linesFromToOf(1, 3, ppm), expected, 'builds a header correctly')
+  const c1 = colour(1.5, 0, 0)
+  const c2 = colour(0, 0.5, 0)
+  const c3 = colour(-0.5, 0, 1)
+  const pixelWrites = [
+    (canv: Canvas) => writePixel(canv, 0, 0, c1),
+    (canv: Canvas) => writePixel(canv, 2, 1, c2),
+    (canv: Canvas) => writePixel(canv, 4, 2, c3),
+  ]
+  const updatedCanvas: Canvas = doTo(c, pixelWrites)
+  expected = [ "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+              , "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0"
+              , "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255" ]
+  ppm = canvasToPpm(updatedCanvas)
+  t.deepEqual(linesFromToOf(4, 6, ppm), expected, 'builds the data correctly')
 })
