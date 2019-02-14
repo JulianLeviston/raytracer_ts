@@ -150,6 +150,7 @@ function canvasToPpm(c: Canvas): string {
   ppm = addLine(ppm, String(maxColourValueForPpm))
   const dataLines = ppmDataLines(c, maxColourValueForPpm)
   ppm = dataLines.reduce(addLine, ppm)
+  ppm = addLine(ppm, '\n')
   return ppm
 }
 

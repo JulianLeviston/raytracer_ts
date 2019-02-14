@@ -68,5 +68,8 @@ test('PPM Construction', t => {
              , "153 255 204 153 255 204 153 255 204 153 255 204 153"
              ]
   t.deepEqual(linesFromToOf(4, 7, ppm), expected, 'splits lines longer than 70 chars correctly')
+  ppm = canvasToPpm(c)
+  const lastCharOfPpm = ppm[ppm.length - 1]
+  t.is(lastCharOfPpm, '\n', 'always ends PPM files with a newline')
 })
 
