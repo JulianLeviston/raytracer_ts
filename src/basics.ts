@@ -77,7 +77,7 @@ function identity<A>(x: A): A {
  * @param to number the range should end on
  */
 function range(from: number, to: number): number[] {
-  const size = to - from
+  const size = to - (from - 1)
   const arr = Array.from(Array(size).keys())
   return arr.map((_item, index) => from + index)
 }
