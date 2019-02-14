@@ -13,8 +13,9 @@ console.log(prog1)
 const prog1a: number = add(3, div(mul(2, 5), 2))
 console.log(prog1a)
 
-// Next, we want to be able to "get inside" the expressions so we have more control.
-// So, we begin by building an algebra that can let us write expressions
+// Next, we want to be able to "get inside" the expression at a granular level
+// so we can have more control over its "execution".
+// So, we begin by building an "algebra" that can let us write expressions
 // similar to the above, where the operations are +, *, / and -, and
 // expressions can be either an application of an operation, or a value
 type Expr = IVal | IAdd | ISub | IMul | IDiv
