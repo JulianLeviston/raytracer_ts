@@ -8,6 +8,7 @@ import {
   writePixel,
   pixelAt,
   canvasToPpm,
+  canvasMap,
 } from '../src/canvas'
 import {
   Tuple,
@@ -17,6 +18,7 @@ import {
 import {
   linesFromToOf,
   doTo,
+  always,
 } from '../src/basics'
 
 test('Canvas creation', t => {
@@ -57,4 +59,14 @@ test('PPM Construction', t => {
               , "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255" ]
   ppm = canvasToPpm(updatedCanvas)
   t.deepEqual(linesFromToOf(4, 6, ppm), expected, 'builds the data correctly')
+  c = canvas(10, 2)
+  const canvasWithSingleColour = canvasMap(always(colour(1, 0.8, 0.6)), c)
+  ppm = canvasToPpm(canvasWithSingleColour)
+  expected = [ "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204"
+             , "153 255 204 153 255 204 153 255 204 153 255 204 153"
+             , "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204"
+             , "153 255 204 153 255 204 153 255 204 153 255 204 153"
+             ]
+  t.deepEqual(linesFromToOf(4, 7, ppm), expected, 'splits lines longer than 70 chars correctly')
 })
+

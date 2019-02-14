@@ -72,6 +72,16 @@ function canvas(width: number, height: number): Canvas {
 }
 
 /**
+ * Build a new canvas by mapping a function over every element of a given canvas
+ * @param f function from Tuple to Tuple that will be applied to each element of the canvas
+ * @param c the canvas to apply the function across
+ */
+function canvasMap(f: (a: Tuple) => Tuple, c: Canvas): Canvas {
+  const newValues = c.values.map((row) => row.map(f))
+  return matrix(newValues)
+}
+
+/**
  * Get the width of any Matrix (includes Canvas)
  * @param m matrix to find the width of
  */
@@ -153,23 +163,30 @@ function canvasToPpm(c: Canvas): string {
  */
 function ppmDataLines(c: Canvas, maxColourValue: number): string[] {
   let canvasHeight = height(c)
-  const buildRowStrings = buildRowStringsFor(c, maxColourValue)
+  const buildRowStrings = buildPpmRowStringsFor(c, maxColourValue)
   const rowNumberRange = range(1, canvasHeight)
   return concatMap(buildRowStrings, rowNumberRange)
 }
+
+const maxPpmLineLength = 70
 
 /**
  * Builds a function that takes a row number and extracts an array of
  * strings (because they may be wrapped) from the closed-over canvas
  * and maxColourValue. Useful for iterating over an array of 1-based
- * indexes as the height of a canvas.
+ * indexes as the height of a canvas to build wrapped arrays of string
+ * representations for the PPM format.
  * @param c Canvas to build a row string from
  * @param maxColourValue maximum colour value to scale the pixels to
  */
-function buildRowStringsFor(c: Canvas, maxColourValue: number): (rowNumber: number) => string[] {
-  const rowStringsBuilder = (rowNumber: number) => {
+function buildPpmRowStringsFor(c: Canvas, maxColourValue: number): (rowNumber: number) => string[] {
+  const rowStringsBuilder = (rowNumber: number): string[] => {
     const pixels = c.getRow(rowNumber)
-    return [pixels.map((pixel) => pixelToClampedPpmInts(maxColourValue, pixel).join(' ')).join(' ')]
+    const clampedPpmIntsAsStrings = concatMap(
+      (pixel) => pixelToClampedPpmInts(maxColourValue, pixel).map(String),
+      pixels
+    )
+    return splitLines(maxPpmLineLength, clampedPpmIntsAsStrings).map((words) => words.join(' '))
   }
   return rowStringsBuilder
 }
@@ -199,12 +216,50 @@ function clampedPpmIntFromFloat(maxColourValue: number, colourValue: number): nu
   return Math.round(minMaxVal)
 }
 
+type Word = string
+type Line = Word[]
+
+/**
+ * Takes a list of words and a maximum line length and extracts
+ * a list of lines from it of no more than the max line length in
+ * length.
+ * @param maxLen maximum length of characters a line should be
+ * @param words the words to split into lines
+ */
+function splitLines(maxLen: number, words: Word[]): Line[] {
+  if (maxLen <= 0 || words.length === 0) return []
+  const go = (lines: Line[], remainingWords: Word[]): Line[] => {
+    const [line, wordsLeft] = parseLine(maxLen, remainingWords)
+    if (wordsLeft.length === 0) return [...lines, line]
+    return go([...lines, line], wordsLeft)
+  }
+  return go([], words)
+}
+
+/**
+ * Takes a list of words and a maximum line length and extracts
+ * a single line and returns it in a tuple with the remaining words.
+ * @param maxLen maximum length of characters a line should be
+ * @param words the words to parse a line from
+ */
+function parseLine(maxLen: number, words: Word[]): [Line, Word[]] {
+  if (maxLen <= 0 || words.length === 0) return [[], []]
+  const go = (len: number, parsedLine: Line, unparsedWords: Word[]): [Line, Word[]] => {
+    if (unparsedWords.length === 0 || unparsedWords[0].length > len) return [parsedLine, unparsedWords]
+    const [word, ...remainingUnparsed] = unparsedWords
+    const newLen = len - (word.length + 1)
+    return go(newLen, [...parsedLine, word], remainingUnparsed)
+  }
+  return go(maxLen, [], words)
+}
+
 export {
   Canvas,
   canvas,
   width,
   height,
   pixels,
+  canvasMap,
   writePixel,
   pixelAt,
   canvasToPpm,

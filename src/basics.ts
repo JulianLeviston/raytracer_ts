@@ -82,6 +82,15 @@ function range(from: number, to: number): number[] {
   return arr.map((_item, index) => from + index)
 }
 
+/**
+ * Takes a value and builds a function on a single argument.
+ * The function simply returns the value no matter what input it gets.
+ * @param val value to always be returned, no matter the argument
+ */
+function always<A,B>(val: A): (ignoredArg: B) => A {
+  return (ignoredArg: B) => { return val }
+}
+
 export {
   identity,
   lines,
@@ -91,4 +100,5 @@ export {
   concat,
   concatMap,
   range,
+  always,
 }
