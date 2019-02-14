@@ -4,7 +4,7 @@ function sub(x: number, y: number): number { return x - y }
 function mul(x: number, y: number): number { return x * y }
 function div(x: number, y: number): number { return x / y }
 
-// Here is a simple "program" that uses arithmetic expressions:
+// Here is a simple "program": a simple arithmetic expression:
 const prog1: number = 3 + (2 * 5) / 2
 console.log(prog1)
 
