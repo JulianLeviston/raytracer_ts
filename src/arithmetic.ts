@@ -106,9 +106,29 @@ function binOpAp(op: (n1: number, n2: number) => number, expr: IBinOp): number {
 // However, this is less than ideal; to use it we have to change the way
 // we write our code, into what effectively amounts to s-expressions,
 // which makes it more difficult to read, understand and write:
-const expr = new Add(new Val(3), new Div(new Mul(new Val(2), new Val(5)), new Val(2)))
+let expr = new Add(new Val(3), new Div(new Mul(new Val(2), new Val(5)), new Val(2)))
 const prog2: number = doEval(expr)
 console.log(prog2)
+
+// In order to recover some of our previous expressiveness,
+// at least to the point where our program looks mostly like
+// our "operations" in prog1a, we can build some helper functions for
+// operation algebra construction:
+
+function valGuard(v: number|Expr) {
+  if (typeof v === 'number') return new Val(v)
+  return v
+}
+function a_add(x: number|Expr, y: number|Expr): Add { return new Add(valGuard(x), valGuard(y)) }
+function a_sub(x: number|Expr, y: number|Expr): Sub { return new Sub(valGuard(x), valGuard(y)) }
+function a_mul(x: number|Expr, y: number|Expr): Mul { return new Mul(valGuard(x), valGuard(y)) }
+function a_div(x: number|Expr, y: number|Expr): Div { return new Div(valGuard(x), valGuard(y)) }
+
+// and now we can rewrite our expression using these
+// which makes it very similar to the original functional expression:
+expr = a_add(3, a_div(a_mul(2, 5), 2))
+const prog2a: number = doEval(expr)
+console.log(prog2a)
 
 // Now... because we've separated out our expressions from our interpretation
 // we can write a new kind of interpreter that documents the evaluation
